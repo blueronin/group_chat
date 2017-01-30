@@ -1,6 +1,6 @@
 
 window.onload = init;
-var HOST = location.origin.replace(/^http/, 'ws');
+var HOST = location.origin.replace(/^https/, 'ws');
 console.log(HOST);
 console.log(HOST+"/actions");
 var socket = new WebSocket(HOST+"/actions");
