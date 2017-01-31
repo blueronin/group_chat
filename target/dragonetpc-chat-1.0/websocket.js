@@ -1,29 +1,18 @@
 
 window.onload = init;
-var HOST = location.origin.replace(/^https/, 'ws');
+var HOST = "ws://localhost:8184/dragonetpc-chat";
 console.log(HOST);
 console.log(HOST+"/actions");
 var socket = new WebSocket(HOST+"/actions");
 socket.onmessage = onMessage;
 
 function onMessage(event) {
-    var device = JSON.parse(event.data);
-    if (device.action === "add") {
-        printDeviceElement(device);
+    var message = JSON.parse(event.data);
+    if (message.action === "addMessage") {
+        showForm();
+        printMessage(message);
     }
-    if (device.action === "remove") {
-        document.getElementById(device.id).remove();
-        //device.parentNode.removeChild(device);
-    }
-    if (device.action === "toggle") {
-        var node = document.getElementById(device.id);
-        var statusText = node.children[2];
-        if (device.status === "On") {
-            statusText.innerHTML = "Status: " + device.status + " (<a href=\"#\" OnClick=toggleDevice(" + device.id + ")>Turn off</a>)";
-        } else if (device.status === "Off") {
-            statusText.innerHTML = "Status: " + device.status + " (<a href=\"#\" OnClick=toggleDevice(" + device.id + ")>Turn on</a>)";
-        }
-    }
+    
 }
 
 
@@ -36,97 +25,66 @@ function addUser(name) {
 }
 
 
-function addDevice(name, type, description) {
-    var DeviceAction = {
-        action: "add",
-        name: name,
-        type: type,
-        description: description
-    };
-    socket.send(JSON.stringify(DeviceAction));
-}
+function printMessage(message) {
+    var content = document.getElementById("chatListId");
+   
+                                       
+    var liMessage = document.createElement("li");
+    liMessage.setAttribute("class", "left clearfix ");
+    content.appendChild(liMessage);
 
-function removeDevice(element) {
-    var id = element;
-    var DeviceAction = {
-        action: "remove",
-        id: id
-    };
-    socket.send(JSON.stringify(DeviceAction));
-}
+    var spanImage = document.createElement("span");
+    spanImage.setAttribute("class", "chat-img pull-left");
+    liMessage.appendChild(spanImage);
+    var image = document.createElement("img");
+    image.setAttribute("class", "img-circle");
+    image.setAttribute("src", "http://placehold.it/50/55C1E7/fff&text=U");
+    spanImage.appendChild(image);
 
-function toggleDevice(element) {
-    var id = element;
-    var DeviceAction = {
-        action: "toggle",
-        id: id
-    };
-    socket.send(JSON.stringify(DeviceAction));
-}
-
-function printDeviceElement(device) {
-    var content = document.getElementById("content");
+    var divMessage = document.createElement("div");
+    divMessage.setAttribute("class", "chat-body clearfix");
+    liMessage.appendChild(divMessage);
     
-    var deviceDiv = document.createElement("div");
-    deviceDiv.setAttribute("id", device.id);
-    deviceDiv.setAttribute("class", "device " + device.type);
-    content.appendChild(deviceDiv);
-
-    var deviceName = document.createElement("span");
-    deviceName.setAttribute("class", "deviceName");
-    deviceName.innerHTML = device.name;
-    deviceDiv.appendChild(deviceName);
-
-    var deviceType = document.createElement("span");
-    deviceType.innerHTML = "<b>Type:</b> " + device.type;
-    deviceDiv.appendChild(deviceType);
-
-    var deviceStatus = document.createElement("span");
-    if (device.status === "On") {
-        deviceStatus.innerHTML = "<b>Status:</b> " + device.status + " (<a href=\"#\" OnClick=toggleDevice(" + device.id + ")>Turn off</a>)";
-    } else if (device.status === "Off") {
-        deviceStatus.innerHTML = "<b>Status:</b> " + device.status + " (<a href=\"#\" OnClick=toggleDevice(" + device.id + ")>Turn on</a>)";
-        //deviceDiv.setAttribute("class", "device off");
-    }
-    deviceDiv.appendChild(deviceStatus);
-
-    var deviceDescription = document.createElement("span");
-    deviceDescription.innerHTML = "<b>Comments:</b> " + device.description;
-    deviceDiv.appendChild(deviceDescription);
-
-    var removeDevice = document.createElement("span");
-    removeDevice.setAttribute("class", "removeDevice");
-    removeDevice.innerHTML = "<a href=\"#\" OnClick=removeDevice(" + device.id + ")>Remove device</a>";
-    deviceDiv.appendChild(removeDevice);
+    var divHeader = document.createElement("div");
+    divHeader.setAttribute("class", "header");
+    divMessage.appendChild(divHeader);
+    
+    var username = document.createElement("strong");
+    username.setAttribute("class", "primary-font");
+    username.innerHTML = message.username;
+    divHeader.appendChild(username);
+    
+    var message = document.createElement("p");
+    message.innerHTML = message.message;
+    divMessage.appendChild(message);
+    
 }
 
 function showForm() {
-    document.getElementById("addDeviceForm").style.display = '';
+    document.getElementById("chatContainerId").style.display = '';
 }
 
 function hideForm() {
-    document.getElementById("addDeviceForm").style.display = "none";
+    document.getElementById("chatContainerId").style.display = "none";
 }
 
-function formSubmit() {
-    var form = document.getElementById("addDeviceForm");
-    var name = form.elements["device_name"].value;
-    var type = form.elements["device_type"].value;
-    var description = form.elements["device_description"].value;
-    hideForm();
-    document.getElementById("addDeviceForm").reset();
-    addDevice(name, type, description);
-}
 
 function login() {
-    var form = document.getElementById("addUserForm");
-    var name = form.elements["user_name"].value;
-    document.getElementById("addUserForm").reset();
+    var name =$("#username").val();
+    $("#username").val('');
     addUser(name);
+    
 }
 
 function init() {
     hideForm();
+    //events
+    $("#signInButton").click(function (){
+    alert( "Handler for .click() called." );
+    login();
+})
 }
+
+
 
 

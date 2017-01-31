@@ -5,6 +5,7 @@
  */
 package com.jefferpc.chat.websocket;
 
+import com.jefferpc.chat.model.Message;
 import com.jefferpc.chat.model.User;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class SessionHandler {
 
     private final Set<Session> sessions = new HashSet<>();
     private final Set<User> users = new LinkedHashSet<>();
-    private final List<String> messages = new ArrayList<>();
+    private final List<Message> messages = new ArrayList<>();
 
     /**
      *
@@ -36,10 +37,7 @@ public class SessionHandler {
      */
     public void addSession(Session session) {
         sessions.add(session);
-        for (User user : users) {
-            JsonObject addMessage = createAddMessage(user);
-            sendToSession(session, addMessage);
-        }
+
     }
 
     /**
@@ -54,10 +52,17 @@ public class SessionHandler {
      *
      * @param user
      */
-    public void addUser(User user) {
+    public void addUser(User user,Session session) {
         if (validateUser(user)) {
+            for (Message message : messages) {
+                JsonObject addMessage = createAddMessage(message);
+                sendToSession(session, addMessage);
+            }
             users.add(user);
-            JsonObject addMessage = createAddMessage(user);
+            Message message = new Message();
+            message.setMessage(user.getUserName() + " has connected!.");
+            message.setUser(user);
+            JsonObject addMessage = createAddMessage(message);
             sendToAllConnectedSessions(addMessage);
         }
 
@@ -71,11 +76,16 @@ public class SessionHandler {
         users.remove(user);
     }
 
-    public void addMessage(String message, User user) {
-        messages.add(user.getUserName() + ": " + message);
+    public void addMessage(String text, User user) {
+        Message message = new Message();
+        message.setMessage(text);
+        message.setUser(user);
+        messages.add(message);
+        JsonObject addMessage = createAddMessage(message);
+        sendToAllConnectedSessions(addMessage);
     }
 
-    public List<String> getMessages() {
+    public List<Message> getMessages() {
         return messages;
     }
 
@@ -115,12 +125,12 @@ public class SessionHandler {
      * @param user
      * @return
      */
-    private JsonObject createAddMessage(User user) {
+    private JsonObject createAddMessage(Message message) {
         JsonProvider provider = JsonProvider.provider();
         JsonObject addMessage = provider.createObjectBuilder()
-                .add("action", "add")
-                .add("username", user.getUserName())
-                .add("status", user.getStatus())
+                .add("action", "addMessage")
+                .add("username", message.getUser().getUserName())
+                .add("message", message.getMessage())
                 .build();
         return addMessage;
     }
@@ -131,7 +141,12 @@ public class SessionHandler {
      * @return
      */
     private boolean validateUser(User user) {
-        return !users.contains(user);
+        for (User userTemp : users) {
+            if(userTemp.getUserName().equals(user.getUserName())){
+                return false;
+            }
+        }
+        return true;
     }
 
 }

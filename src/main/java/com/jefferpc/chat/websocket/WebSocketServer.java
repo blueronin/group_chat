@@ -27,6 +27,8 @@ import javax.websocket.server.ServerEndpoint;
 @ServerEndpoint("/actions")
 public class WebSocketServer {
     
+    
+
     @Inject
     private SessionHandler sessionHandler;
 
@@ -37,27 +39,34 @@ public class WebSocketServer {
 
     @OnClose
     public void close(Session session) {
-         sessionHandler.removeSession(session);
+        sessionHandler.removeSession(session);
     }
 
     @OnError
     public void onError(Throwable error) {
-         Logger.getLogger(WebSocketServer.class.getName()).log(Level.SEVERE, null, error);
+        Logger.getLogger(WebSocketServer.class.getName()).log(Level.SEVERE, null, error);
     }
 
     @OnMessage
     public void handleMessage(String message, Session session) {
-         try (JsonReader reader = Json.createReader(new StringReader(message))) {
+        try (JsonReader reader = Json.createReader(new StringReader(message))) {
             JsonObject jsonMessage = reader.readObject();
 
             if ("addUser".equals(jsonMessage.getString("action"))) {
                 User user = new User();
                 user.setUserName(jsonMessage.getString("userName"));
                 user.setStatus("connected");
-                sessionHandler.addUser(user);
+                sessionHandler.addUser(user, session);
+                return;
             }
-//            sessionHandler.addMessage(message, null);
-            
+            if ("addMessage".equals(jsonMessage.getString("action"))) {
+                User user = new User();
+                user.setUserName(jsonMessage.getString("userName"));
+                user.setStatus("connected");
+                sessionHandler.addMessage(jsonMessage.getString("message"), user);
+                return;
+            }
+
         }
     }
 }
