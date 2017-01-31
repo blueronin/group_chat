@@ -3,6 +3,7 @@ window.onload = init;
 
 //var HOST = "ws://localhost:8184/dragonetpc-chat";
 var HOST = "ws://obscure-bayou-60747.herokuapp.com";
+
 console.log(HOST);
 console.log(HOST+"/actions");
 var socket = new WebSocket(HOST+"/actions");
