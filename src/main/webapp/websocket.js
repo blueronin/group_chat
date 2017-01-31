@@ -1,5 +1,7 @@
 
 window.onload = init;
+
+//var HOST = "ws://localhost:8184/dragonetpc-chat";
 var HOST = "ws://obscure-bayou-60747.herokuapp.com";
 console.log(HOST);
 console.log(HOST+"/actions");
@@ -77,10 +79,10 @@ function login() {
 }
 
 function init() {
-    hideForm();
+//    hideForm();
     //events
     $("#signInButton").click(function (){
-    alert( "Handler for .click() called." );
+    
     login();
 })
 }
