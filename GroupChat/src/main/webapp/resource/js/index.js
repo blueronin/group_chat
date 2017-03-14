@@ -6,7 +6,7 @@
 /* global app, Backbone */
 
 var wsocket;
-var serviceLocation = "ws://0.0.0.0:8080/GroupChat/chat/";
+var serviceLocation = "ws://cmduquerchatgroup.herokuapp.com/GroupChat/chat/";
 var $nickName;
 var $message;
 var $messageReceived;
