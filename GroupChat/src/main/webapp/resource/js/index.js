@@ -77,7 +77,7 @@ function sendMessage() {
 }
 
 function connectToChatserver() {
-    room = 'Sala de Chat de Pruebas';
+    room = 'SalaPruebas';
     wsocket = new WebSocket(serviceLocation + room + '/' + $nickName.val());
     wsocket.onmessage = onMessageReceived;
     wsocket.onclose = onClose;
