@@ -6,7 +6,7 @@
 /* global app, Backbone */
 
 var wsocket;
-var serviceLocation = "wss://cmduquerchatgroup.herokuapp.com/GroupChat/chat/";
+var serviceLocation = "wss://cmduquerchatgroup.herokuapp.com/chat/";
 var $nickName;
 var $message;
 var $messageReceived;
@@ -77,7 +77,7 @@ function sendMessage() {
 }
 
 function connectToChatserver() {
-    room = 'SalaPruebas';
+    room = 'Sala de Chat de Pruebas';
     wsocket = new WebSocket(serviceLocation + room + '/' + $nickName.val());
     wsocket.onmessage = onMessageReceived;
     wsocket.onclose = onClose;
