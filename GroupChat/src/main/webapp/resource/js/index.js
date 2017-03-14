@@ -64,9 +64,15 @@ function onClose(event) {
     console.log(event.reason);
 }
 function sendMessage() {
-    var msg = '{"message":"' + $message.val() + '", "sender":"'
-            + $nickName.val() + '", "received":""}';
-    wsocket.send(msg);
+    if ($message.val().includes('/youtube')) {
+        console.log($message.val());
+        console.log($message.val().replace("/youtube", ""))
+        getRequest($message.val().replace("/youtube", ""), $nickName.val());
+    } else {
+        var msg = '{"message":"' + $message.val() + '", "sender":"'
+                + $nickName.val() + '", "received":""}';
+        wsocket.send(msg);
+    }
     $message.val('').focus();
 }
 
@@ -93,9 +99,36 @@ $(document).ready(function () {
     $nickName.focus();
 });
 
+function getRequest(searchTerm, nickname) {
+    url = 'https://www.googleapis.com/youtube/v3/search';
+    var params = {
+        part: 'snippet',
+        key: 'AIzaSyAuyFIaDpcg2NUKpBjbyUo2rhHuiF1L7hA',
+        q: searchTerm,
+        maxResults: 1
+    };
+
+    $.getJSON(url, params, function (searchTerm) {
+        return showResults(searchTerm,nickname);
+    });
+}
 
 
+function showResults(results, nickname) {
+    var html = "";
+    var entries = results.items;
 
+    $.each(entries, function (index, value) {
+        var id =  value.id.videoId;
+        var msg = '{"message":"'+ id + '", "sender":"'
+                + nickname + '", "received":"'+ new Date() +'"}';
+        console.log(msg);
+        app.MessageList.add(JSON.parse(msg));
+         html += '<iframe id="ytplayer" type="text/html" width="640" height="360" src="http://www.youtube.com/embed/'+id+'" frameborder="0"/>';
+        $('#message'+id).html(html);
+    });
+    
+    
 
-
-
+    
+}
