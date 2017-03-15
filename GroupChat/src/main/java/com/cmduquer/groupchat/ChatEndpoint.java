@@ -42,6 +42,7 @@ public class ChatEndpoint {
                     totalNickName++;
                 }
         }
+        log.log(Level.INFO, "{0}total nickname", totalNickName);
         if (totalNickName > 1) {
             try {
                 session.close(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "NickName alreay exits"));
