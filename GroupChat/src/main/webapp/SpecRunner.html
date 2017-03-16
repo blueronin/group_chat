@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Jasmine Spec Runner v2.0.0</title>
+
+  <link rel="shortcut icon" type="image/png" href="resource/js/jasmine-2.0.0/jasmine_favicon.png">
+  <link rel="stylesheet" type="text/css" href="resource/js/jasmine-2.0.0/jasmine.css">
+
+  <script type="text/javascript" src="resource/js/jasmine-2.0.0/jasmine.js"></script>
+  <script type="text/javascript" src="resource/js/jasmine-2.0.0/jasmine-html.js"></script>
+  <script type="text/javascript" src="resource/js/jasmine-2.0.0/boot.js"></script>
+
+  <!-- include library files here... -->
+  <script type="text/javascript" src="resource/js/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="resource/js/underscore-min.js"></script>
+  <script type="text/javascript" src="resource/js/backbone.js"></script>
+  <script type="text/javascript" src="resource/js/backbone.localStorage-min.js"></script>
+  
+  <!-- include source files here... -->
+  
+  
+          <!-- Templates -->
+        <script type="text/template" id="message-template">
+            <td class="received"> <%- received %> </td>
+            <td class="user label label-info"> <%- sender %> </td>
+            <td class="message badge" id="message<%- message %>"> <%- message %> </td>
+        </script>  
+        <script type="text/javascript" src="resource/js/index.js"></script>
+</head>
+
+<body>
+<!-- include spec files here... -->
+  <script type="text/javascript" src="spec/ModelSpec.js"></script>
+<!--  <script type="text/javascript" src="spec/ViewSpec.js"></script>-->
+</body>
+</html>

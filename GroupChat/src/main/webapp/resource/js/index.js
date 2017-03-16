@@ -17,11 +17,19 @@ var app = {}; // create namespace for our app
 //--------------
 // Models
 //--------------
-
+app.messageModel = Backbone.Model.extend({
+	defaults: {
+        message : '',
+        sender: '',
+        received: '2017'
+        
+    }
+});
 //--------------
 // Collections
 //--------------
 app.MessageList = Backbone.Collection.extend({
+    model: app.messageModel,
     localStorage: new Store("Messages")
 });
 
@@ -37,6 +45,7 @@ app.MessageView = Backbone.View.extend({
     tagName: 'tr',
     template: _.template($('#message-template').html()),
     render: function () {
+        
         this.$el.html(this.template(this.model.toJSON()));
         return this;
     }
@@ -127,7 +136,7 @@ function showResults(results, nickname) {
          html += '<iframe id="ytplayer" type="text/html" width="640" height="360" src="http://www.youtube.com/embed/'+id+'" frameborder="0"/>';
         $('#message'+id).html(html);
     });
-    
+     return html;
     
 
     
