@@ -6,7 +6,7 @@
 /* global app, Backbone */
 
 var wsocket;
-var serviceLocation = "ws://localhost:8084/GroupChat/chat/";
+var serviceLocation = "ws://localhost:8080/chat/";
 var $nickName;
 var $message;
 var $messageReceived;
