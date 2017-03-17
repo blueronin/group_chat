@@ -50,4 +50,9 @@ You can run the application on your local machine using the next steps:
 * Righ click on the root project and then select run.
 
 
+# To run locally do
 
+```
+mvn package
+java -jar target/dependency/webapp-runner.jar --port 9000 target/*.war
+```
