@@ -4,7 +4,7 @@ define([
   'underscore',
   'backbone',
   'backboneLocalstorage',
-  'models/Message'
+  'models/message'
 ], function (_, Backbone, Store, MessageModel) {
   'use strict';
 
