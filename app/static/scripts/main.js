@@ -2,6 +2,7 @@
 'use strict';
 
 require.config({
+  waitSeconds : 30,
   shim: {
     socketio: {
       exports: 'io'
