@@ -59,3 +59,5 @@ easy_install.pyc
 itsdangerous.pyc
 pyparsing.pyc
 six.pyc
+gunicorn-19.4.5.dist-info
+gunicorn
