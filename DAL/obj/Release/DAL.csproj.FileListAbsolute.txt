@@ -1,0 +1,4 @@
+C:\Users\User\Desktop\PruebaLondres\www\DAL\bin\Release\DAL.dll
+C:\Users\User\Desktop\PruebaLondres\www\DAL\bin\Release\DAL.pdb
+C:\Users\User\Desktop\PruebaLondres\www\DAL\obj\Release\DAL.dll
+C:\Users\User\Desktop\PruebaLondres\www\DAL\obj\Release\DAL.pdb
