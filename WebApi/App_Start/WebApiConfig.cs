@@ -1,0 +1,31 @@
+﻿using System.Web.Http;
+using System.Web.Http.Cors;
+
+namespace WebApi
+{
+    public static class WebApiConfig
+    {
+        public static void Register(HttpConfiguration config)
+        {
+            // Web API configuration and services
+
+            // Web API routes
+            config.MapHttpAttributeRoutes();
+
+            //http://blog.jongallant.com/2013/08/angularjs-webapi-cors.html#.U8OVLfl5Mvk
+            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
+
+            //config.Routes.MapHttpRoute(
+            //    name: "DefaultApi",
+            //  routeTemplate: "{controller}/{action}/{id}",
+            //  defaults: new { id = RouteParameter.Optional }
+            //);
+
+            config.Routes.MapHttpRoute(
+                name: "DefaultApi",
+              routeTemplate: "{controller}/{id}",
+              defaults: new { id = RouteParameter.Optional }
+            );
+        }
+    }
+}
