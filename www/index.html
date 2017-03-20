@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Group Chat V1.0</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" />    
+    <link href="css/font-awesome.min.css" rel="stylesheet" />    
+    <link href="css/styles.css" rel="stylesheet" />
+</head>
+<body> 
+
+    <div id="container">
+    </div>
+    <div id="subcontainer">
+    </div>
+
+    <script src="js/lib/modernizr-2.6.2.min.js"></script>
+    <script src="js/lib/jquery-min.js"></script>
+    <script src="js/lib/underscore-min.js"></script>
+    <script src="js/lib/backbone-min.js"></script>
+    <script src="js/lib/Mustache.js"></script>
+    <script src="js/lib/bootstrap.min.js"></script>    
+
+    <!--Backbone-->
+    <script src="js/backbone/routes/chatRouter.js"></script>    
+    <script src="js/backbone/app.js"></script>      
+    <script src="js/backbone/models/mensaje.js"></script>    
+    <script src="js/backbone/models/usuario.js"></script>
+    <script src="js/backbone/models/giphy.js"></script>
+    <script src="js/backbone/collections/mensajes.js"></script>    
+    <script src="js/backbone/collections/giphys.js"></script>
+    <script src="js/backbone/collections/usuarios.js"></script>
+    <script src="js/backbone/views/mensajeView.js"></script>    
+    <script src="js/backbone/views/mensajesView.js"></script>
+    <script src="js/backbone/views/nuevoMensajeView.js"></script>    
+    <script src="js/backbone/views/giphyView.js"></script>
+    <script src="js/backbone/views/giphysView.js"></script>
+    <script src="js/backbone/views/usuarioView.js"></script>
+    <script src="js/backbone/views/usuariosView.js"></script>
+    <script src="js/main.js"></script>
+
+    <script type="text/html" id="LoginTemplate">
+        <section id="section-login">
+            <div class="container">
+                <div class="row">
+                    <div class="offset-xs-4 col-xs-4 login-content">
+                        <h1 class="text-center">Group Chat V_1.0</h1> 
+                        <div class="row">
+                             <div class="hidden-xs-down col-sm-4">
+                                 Nickname:
+                             </div>
+                             <div class="col-xs-12 col-sm-8">                                 
+                                 <select id="selectUsuarios" class="form-control">
+                                 </select>
+                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <div class="alert alert-login"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <button class="btn btn-success btn-lg" id='btnIngresar'>Ingresar</button>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </section>
+    </script>
+
+    <script type="text/html" id="MensajesTemplate">
+        <nav class="navbar navbar-light bg-faded">                    
+            <div class="row">
+                <div class="col-6">
+                    <span class="navbar-brand">Group Chat</span>
+                </div>
+                <div class="col-6">
+                    <div id="navbarText">            
+                        <a id="logout" class="btn btn-info">Salir</a>              
+                    </div>
+                </div>
+            </div>          
+        </nav>
+        <section id="section-chat">
+            <div class="container">                
+                <div class="row">
+                    <div class="col-12 chat-container">
+                        <div id="mensajes">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </script>
+
+    <script type="text/html" id="MensajeTemplate">
+        <b>{{ Nickname }}</b>
+        <br />
+        {{#esImagen}}            
+         <img src="{{Descripcion}}" />
+        {{/esImagen}}
+        {{^esImagen}}            
+         {{Descripcion}}
+        {{/esImagen}}        
+    </script>
+
+    <script type="text/html" id="NuevoMensajeTemplate">
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
+                        <input type='text' autofocus id='newMensaje'/>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 text-center">                        
+                        <button class="btn btn-success" id='add'>Enviar</button>
+                        <button class="btn btn-success" id="search" >
+                            <i class="fa fa-search" aria-hidden="true"></i> Giphy
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </script>    
+
+    <a id="btnModalGiphy" data-toggle="modal" data-target="#modalGiphy"></a>
+    <div class="modal fade" id="modalGiphy">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Giphy Search</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div id="modalBody" class="modal-body">            
+          </div>          
+        </div>
+      </div>
+    </div>
+
+    <script type="text/html" id="GiphysTemplate">
+        <div class="row">
+            <div class="col-9">
+                <input id="searchInput" type="text" class="form-control" placeholder="Ingresa tu búsqueda" />
+            </div>
+            <div class="col-3">
+                <a class="btn btn-primary" id="searchButton">Search</a>
+            </div>
+        </div>
+        <div class="row" id="giphyImages">
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-12 text-center">
+                <button id="searchEnviar" type="button" class="btn btn-primary">Enviar</button>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="GiphyTemplate">        
+        <img src="{{ images.fixed_height.url }}" />               
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,171 @@
+﻿body, html {
+    font-size:16px;
+}
+
+body {
+    background-color:#33b3e8;
+}
+
+img {
+    max-width:100%;
+}
+
+.btn {
+    cursor:pointer;
+}
+
+h1 {
+    font-size:2rem;
+}
+
+input {
+    width:100%;
+}
+
+#navbarText {
+    margin-left: auto;
+    width: 80px;
+}
+
+/*LOGIN*/
+
+#section-login {
+    margin-top:15%;
+}
+
+#section-login .container .row {
+    width:25rem;
+    margin:0 auto;
+}
+
+.login-content {
+    border: 1px solid #fff;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+.login-content h1 {
+    margin-bottom: 1rem;
+}
+
+.login-content .row {
+    margin-bottom: 1rem !important;
+}
+
+/*CHAT*/
+#section-chat {
+    margin-top:2%;
+}
+
+#section-chat h1 {
+    margin-bottom:1rem;
+}
+
+.chat-container {
+    border:2px solid #fff; 
+    border-radius:0.5rem;
+    height:400px; 
+    margin-bottom:0.8rem;
+    overflow-y: scroll;
+    padding: 10px 30px;
+    background-color: #fff;
+}
+
+.chat-comment {
+    padding:10px;
+}
+
+.chat-comment {
+    border-radius:5px;
+    margin-top:5px;        
+}
+
+.chat-comment-personal {
+    background-color: #FAEBD7;
+    float: right;
+}
+
+.chat-comment-personal:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    margin-top: -15px;
+    right: -30px;
+    border: solid 15px transparent;
+    border-left-color: #FAEBD7;
+    z-index: 1;   
+}
+
+.chat-comment-another {
+    background-color: #00FFFF;    
+}
+
+.chat-comment-another:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    margin-top: -15px;
+    left:-30px;
+    border: solid 15px transparent;
+    border-right-color: #00FFFF;
+    z-index: 1;
+}
+
+.clear {
+    clear:both;
+}
+
+.giphy-image {
+    margin-top:1rem;
+    border-radius:5px;
+}
+
+.giphy-image img {    
+    border-radius:0.5rem;
+    height: 100%;
+}
+
+.giphy-seleccionada {
+    border:2px solid blue;
+}
+
+/*************************************************** Media Queries ***************************************************/
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+    
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199px) { 
+    
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991px) {    
+
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767px) {   
+
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575px) {  
+    body, html {
+        font-size:14px;
+    } 
+    #section-login .container .row {
+        width: 17rem;
+        margin: 0 auto; 
+    }
+    #section-login .container {        
+        padding-right: 30px;
+        padding-left: 0;
+    }
+    #section-chat .container {        
+        padding: 0 20px;       
+    }
+}
+
