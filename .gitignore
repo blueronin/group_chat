@@ -50,3 +50,12 @@ zope
 zope.interface-4.3.3.dist-info
 easy_install.py
 itsdangerous.py
+.DS_Store
+app/__init__.pyc
+app/main/__init__.pyc
+app/main/events.pyc
+appdirs.pyc
+easy_install.pyc
+itsdangerous.pyc
+pyparsing.pyc
+six.pyc
