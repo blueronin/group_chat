@@ -35,7 +35,9 @@ gevent-1.2.1.dist-info
 app/__init__.pyc
 app/main/__init__.pyc
 app/main/events.pyc
+app/main/routes.pyc
 app/static/.DS_Store
 app/static/styles/.DS_Store
 itsdangerous.pyc
 six.pyc
+
