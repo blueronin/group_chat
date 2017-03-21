@@ -37,6 +37,12 @@ Must have tests, just few but tests...
 * fork this repo
 * create a PR with the implementation and URL to checkit
 
+
 # Heroku Project:
+* Sorry slow server by multiple request :neutral_face:
 [https://blueroningroupchat.herokuapp.com/](https://blueroningroupchat.herokuapp.com/)
+
+# OpenShift Project:
+* Sorry slow server by multiple request :neutral_face:
+[http://blueroningroupchat-meblog.rhcloud.com/](http://blueroningroupchat-meblog.rhcloud.com/)
 
