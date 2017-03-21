@@ -40,10 +40,14 @@ Must have tests, just few but tests...
 # Run Project:
 Build Back-End
 
-Install packages
+Install Bower
+
+`bower install`
+
+Install packages Python
 
 `pip install -r requirements.txt` or fix local `pip install -r requirements.txt -t .`
 
-Run Serve
+Run Server
 
 `python chat.py`
