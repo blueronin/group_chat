@@ -1,0 +1,21 @@
+{
+  "name": "blueronin-group-chat",
+  "version": "0.0.0",
+  "dependencies": {
+    "bootstrap-sass-official": "~3.3.1",
+    "jquery": "~2.1.0",
+    "backbone": "~1.1.0",
+    "requirejs": "~2.1.10",
+    "requirejs-text": "~2.0.10",
+    "modernizr": "~2.7.1",
+    "handlebars": "~1.3.0",
+    "lodash": "~2.4.1",
+    "socket.io-client": "^1.7.2",
+    "backbone.localStorage": "backbone.localstorage#^1.1.16",
+    "moment": "^2.18.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  }
+}

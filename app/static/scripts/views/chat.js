@@ -60,7 +60,7 @@ define([
         return false;
       }
 
-      this.socket = io.connect('https://blueroningroupchat.herokuapp.com/chat');
+      this.socket = io.connect('http://localhost:5000/chat');
       this.socket.on('connect', function() {
         self.socket.emit('joined', { 'nickname': self.nickname});
       });
