@@ -36,3 +36,18 @@ Must have tests, just few but tests...
 
 * fork this repo
 * create a PR with the implementation and URL to checkit
+
+# Run Project:
+Build Back-End
+
+Install Bower
+
+`bower install`
+
+Install packages Python
+
+`pip install -r requirements.txt` or fix local `pip install -r requirements.txt -t .`
+
+Run Server
+
+`python chat.py`
