@@ -36,3 +36,23 @@ Must have tests, just few but tests...
 
 * fork this repo
 * create a PR with the implementation and URL to checkit
+
+# URL Where is deploy
+
+https://cmduquerchatgroup.herokuapp.com/
+
+The application isn't running correctly on this site. I have a problem with the tomcat configuration.
+
+You can run the application on your local machine using the next steps:
+* Download netbeans https://netbeans.org/downloads/ , you must select the second option java ee.
+* Install netbeans.
+* After you install netbeans select file > Open project and search for the chat group project.
+* Righ click on the root project and then select run.
+
+
+# To run locally do
+
+```
+mvn package
+java -jar target/dependency/webapp-runner.jar --port 9000 target/*.war
+```
