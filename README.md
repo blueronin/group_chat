@@ -1,38 +1,33 @@
-# group_chat
+# Trial project: Group chat
 
 
-Must have the following:
-* login(could be just pick nickname or full signup process)
-* cant be 2 people with same nickname
-* chat room with the whole history
-* an input to type messages
-* messages must show the sender
-* Bot youtube or giphy:
+Requirements:
+* The user should be able to login (could be just picking a nickname or full signup process).
+* 2 people should not have the same nickname.
+* It should have one or more chat rooms with the whole message history.
+* There should be an input for the user to send messages.
+* Messages in the chat must show the sender info.
+* The chat should have some form of bot/integration with youtube or giphy:
   * Giphy:
     * serach gif and show it.
-  * Youtbe
+  * Youtube
     * that search on youtube(using api) with format:
     * /youtube song_name/artist
     * must place a youtube embed player with first result
  
- 
- 
 Tech that must be used, front end:
-* JS - Backbone or React(redux its a bonus)
-* HTML/CSS bootstrap
+* JS - Backbone or React (redux its a bonus)
+* HTML/CSS
 
-
+It should have tests. Just a few are enought but tests... 
 
 Backend:
-* Whatever you like(we do like python so!)
-
+* Whatever you like (we use python a lot but not required).
 
 Platform:
-* Run on heroku free plan, or whereever you like but reachable from anywhere.
+* Run on heroku free plan, or whereever you like but the site should be reachable from anywhere.
 
-Must have tests, just few but tests... 
+# To create your entry
 
-# To apply to basestone
-
-* fork this repo
-* create a PR with the implementation and URL to checkit
+* Fork this repository
+* Create a Github pull request with the implementation and URL to checkit
