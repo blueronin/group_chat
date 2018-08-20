@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">group_chat</string>
+
+
+    <!--
+    Login Strings
+    -->
+
+    <string name="name">Name</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="user">Username</string>
+    <string name="pass">Password</string>
+    <string name="email">Email</string>
+    <string name="create">Create Account</string>
+    <string name="jane">Jane Doe</string>
+    <string name="email_ex">jane@example.com</string>
+
+
+    <!--
+    Main Activity Strings
+    -->
+
+    <string name="chats">Chats</string>
+    <string name="contacts">Contacts</string>
+
 </resources>
