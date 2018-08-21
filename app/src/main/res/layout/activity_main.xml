@@ -12,6 +12,7 @@
         android:id="@+id/tab_menu">
 
         <Button
+            style="?android:attr/buttonBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/chats_tab_button"
@@ -22,6 +23,7 @@
             />
 
         <Button
+            style="?android:attr/buttonBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -30,6 +32,16 @@
             android:background="@color/white"/>
 
     </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tab_menu"
+        android:text="Create Chat"
+        android:id="@+id/save_chat_button"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:background="@color/transparent"/>
 
     <ListView
         android:layout_width="wrap_content"
@@ -48,5 +60,18 @@
         android:layout_marginTop="10dp"
         android:visibility="gone">
     </ListView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_menu_add"
+        />
+
 
 </RelativeLayout>

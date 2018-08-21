@@ -103,7 +103,8 @@
             android:layout_alignRight="@id/password_field"
             android:text="@string/create"
             android:padding="5dp"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/colorPrimary"
+            android:onClick="register"/>
     </RelativeLayout>
 
 

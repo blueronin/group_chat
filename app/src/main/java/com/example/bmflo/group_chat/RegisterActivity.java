@@ -16,6 +16,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import static android.content.ContentValues.TAG;
 
@@ -25,6 +27,8 @@ import static android.content.ContentValues.TAG;
 
 public class RegisterActivity extends Activity {
     private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
+    private DatabaseReference dbRef;
 
     Button registerButton;
 
@@ -48,14 +52,17 @@ public class RegisterActivity extends Activity {
         passwordEditText = (EditText) findViewById(R.id.password_field);
 
         mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        dbRef = database.getReference();
 
     }
 
 
     public void register(View view){
-        String email = emailEditText.getText().toString();
+        final String name = nameEditText.getText().toString();
+        final String email = emailEditText.getText().toString();
         String pass = passwordEditText.getText().toString();
-
+        final String username = usernameEditText.getText().toString();
 
         mAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -65,8 +72,12 @@ public class RegisterActivity extends Activity {
                     //Store User details
                     addUserNameToUser(user);
 
+                    User userInstance = new User(name, username, email);
+                    dbRef.child("users").child(username).setValue(userInstance);
+
                     Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                     startActivity(intent);
+                    RegisterActivity.this.finish();
                 }
                 else{
                     Toast.makeText(RegisterActivity.this, "Authentication failed.",

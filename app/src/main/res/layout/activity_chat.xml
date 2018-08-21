@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/chat_heading"
+        android:orientation="horizontal"
+        android:background="@drawable/bar_border"
+        android:padding="10dp"
+        android:layout_weight="0"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chat_name"
+            android:layout_centerVertical="true"
+            android:text="Roomies"
+            android:textSize="20dp"
+            android:layout_marginTop="20dp"
+            />
+
+        <ImageButton
+            android:id="@+id/add_member_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@android:drawable/ic_menu_add"
+            android:background="@drawable/chat_thumb_sample"/>
+
+    </RelativeLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/messages_view"
+        android:layout_below="@+id/chat_heading"
+        android:layout_weight="3">
+
+    </ListView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/message_editor"
+        android:layout_alignParentBottom="true"
+        android:layout_weight="8"
+        android:background="@color/colorPrimary"
+        >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/message_edit_text"
+            android:background="@drawable/message_editor_border"
+            android:layout_toLeftOf="@id/send_button"
+            android:hint="   Enter message"
+            android:lines="5"
+            android:maxLength="1000"
+            android:layout_margin="10dp"
+            />
+
+        <ImageButton
+            android:id="@+id/send_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@color/transparent"
+            android:src="@android:drawable/ic_menu_send"/>
+    </RelativeLayout>
+</LinearLayout>
