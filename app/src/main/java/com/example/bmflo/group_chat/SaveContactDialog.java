@@ -5,20 +5,29 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by bmflo on 8/20/2018.
@@ -35,21 +44,49 @@ public class SaveContactDialog extends DialogFragment {
     private EditText search;
     private ImageButton addButton;
     private ImageButton searchButton;
+    private TextView result;
+
+    private RelativeLayout resultLayout;
+
+    User searchedUser;
+    User currentUser;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
+        //Get Current user and convert to local user instance
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        Query query = FirebaseDatabase.getInstance().getReference("users").orderByChild("email").equalTo(email);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                        currentUser = snapshot.getValue(User.class);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        //got user
+
         contactDBHelper = new ContactDBHelper(getActivity());
         myContacts = contactDBHelper.getAllContacts();
 
         database = FirebaseDatabase.getInstance();
-        dbRef = database.getReference("User");
+        dbRef = database.getReference("users");
 
         View view = inflater.inflate(R.layout.dialog_add_contact, null);
 
         search = (EditText) view.findViewById(R.id.search_view);
+        result = (TextView) view.findViewById(R.id.result);
+        resultLayout = (RelativeLayout) view.findViewById(R.id.resultEntry);
 
         searchButton = (ImageButton) view.findViewById(R.id.search_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -63,16 +100,14 @@ public class SaveContactDialog extends DialogFragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //saveToContacts();
+                saveToContacts();
+                addButton.setVisibility(View.GONE);
+                String message = "Added "+searchedUser.getUsername()+"!";
+                result.setText(message);
             }
         });
 
-        builder.setTitle("Add Contact").setView(view).setPositiveButton("Add", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //Update db
-            }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setTitle("Add Contact").setView(view).setNegativeButton("Close", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -83,11 +118,60 @@ public class SaveContactDialog extends DialogFragment {
     }
 
     public void searchUser(){
-        String email = search.getText().toString();
+        String username = search.getText().toString();
 
-        //UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(email);
-// See the UserRecord reference doc for the contents of userRecord.
-        //System.out.println("Successfully fetched user data: " + userRecord.getEmail());
+        Query query = FirebaseDatabase.getInstance().getReference("users").orderByChild("username").equalTo(username);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        searchedUser = snapshot.getValue(User.class);
+                        resultLayout.setVisibility(View.VISIBLE);
+                        String userInfo = (searchedUser.getUsername()+"\n"+searchedUser.getName()+"\n"+searchedUser.getEmail());
+                        result.setText(userInfo);
+                    }
+                }
+                else{
+                    result.setText("User not found");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    public void saveToContacts(){
+        //saved to local db and modifies firebase db with each member's new contact
+
+
+        contactDBHelper.addData(searchedUser);
+        String updatedContactString1 = searchedUser.getContactString()+currentUser.getUsername(); //new list of contacts to searched user
+        String updatedContactString2 = currentUser.getContactString()+searchedUser.getUsername(); //new list of contacts for current user
+
+        /*
+        //dbRef.child("users").child(searchedUser.getUsername()).child("contactString").setValue(updatedContactString1);
+
+        Map<String,Object> taskMap = new HashMap<String,Object>();
+        taskMap.put("contactString", updatedContactString1);
+        dbRef.child("users").child(searchedUser.getUsername()).updateChildren(taskMap);
+
+        Map<String,Object> taskMap1 = new HashMap<String,Object>();
+        taskMap.put("contactString", updatedContactString2);
+        dbRef.child("users").child(currentUser.getUsername()).updateChildren(taskMap1);
+        //dbRef.child("users").child(currentUser.getUsername()).child("contactString").setValue(updatedContactString2);
+        */
+
+
+        Map<String, Object> userUpdates = new HashMap<>();
+        userUpdates.put(currentUser.getUsername()+"/contactString", updatedContactString2);
+        userUpdates.put(searchedUser.getUsername()+"/contactString", updatedContactString1);
+
+        dbRef.updateChildren(userUpdates);
     }
 
 }

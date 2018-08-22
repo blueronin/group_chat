@@ -3,6 +3,8 @@ package com.example.bmflo.group_chat;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.os.UserHandle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +19,11 @@ import android.widget.ListView;
 import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -24,10 +31,13 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
+    User currentUserLocal;
 
     Button chatTab;
     Button contactTab;
     int mode;  //0 means we're in chat list view, 1 means we're in contact list view
+
+    Button signOut;
 
     ArrayList<Chat> myChats;
     ArrayList<User> myContacts;
@@ -49,10 +59,48 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        chatDBHelper = new ChatDBHelper(this);
+        /*
+        //Get Current user and convert to local user instance
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        Query query = FirebaseDatabase.getInstance().getReference("users").orderByChild("email").equalTo(email);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                        currentUserLocal = snapshot.getValue(User.class);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        //got user
+        */
+
         contactDBHelper = new ContactDBHelper(this);
-        myChats = chatDBHelper.getAllChats();
         myContacts = contactDBHelper.getAllContacts();
+        //myContacts = extractContactsFromStringList(currentUserLocal.stringToContacts(currentUserLocal.getContactString()));
+
+
+
+        signOut = (Button) findViewById(R.id.sign_out_button);
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        chatDBHelper = new ChatDBHelper(this);
+        //contactDBHelper = new ContactDBHelper(this);
+        myChats = chatDBHelper.getAllChats();
+        //myContacts = contactDBHelper.getAllContacts();
         chatList = (ListView) findViewById(R.id.chat_list_view);
         contactList = (ListView) findViewById(R.id.contacts_list_view);
 
@@ -151,5 +199,29 @@ public class MainActivity extends AppCompatActivity {
     public void addContact(){
         SaveContactDialog dialog = new SaveContactDialog();
         dialog.show(getFragmentManager(), "dialog");
+    }
+
+    public ArrayList<User> extractContactsFromStringList(ArrayList<String> contactStringList){
+        final ArrayList<User> result = new ArrayList<User>();
+        for(String s: contactStringList){
+            Query query = FirebaseDatabase.getInstance().getReference("users").orderByChild("username").equalTo(s);
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()){
+                        for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                            User currentContact = snapshot.getValue(User.class);
+                            result.add(currentContact);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        return result;
     }
 }

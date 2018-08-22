@@ -46,7 +46,7 @@ public class ContactAdapter extends BaseAdapter {
         RelativeLayout chatLayout = (RelativeLayout) contactInfo.inflate(R.layout.contact_list_item_view, parent, false);
 
         ImageView contactIcon = (ImageView)chatLayout.findViewById(R.id.contact_icon);
-        TextView contactName = (TextView)chatLayout.findViewById(R.id.chat_name);
+        TextView contactName = (TextView)chatLayout.findViewById(R.id.contact_name);
 
         User currentCContact = contacts.get(position);
 
