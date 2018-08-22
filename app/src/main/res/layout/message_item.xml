@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:id="@+id/message_layout">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/received_view"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sender_name"
+            android:text="jane1"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/message"
+            android:padding="10dp"
+            android:textColor="@color/colorPrimary"
+            android:layout_below="@id/sender_name"
+            android:background="@color/colorAccent"
+            android:text="This is a sample message to show what a received message will look like"
+            />
+
+        <TextView
+            android:id="@+id/sender_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/message"
+            android:text="12:00pm"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sent_view"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp">
+
+
+
+        <TextView
+            android:padding="10dp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/my_message"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:text="This is a sample message to show what a received message will look like"
+            />
+
+        <TextView
+            android:id="@+id/my_message_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/my_message"
+            android:layout_alignRight="@id/my_message"
+            android:text="12:00pm"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

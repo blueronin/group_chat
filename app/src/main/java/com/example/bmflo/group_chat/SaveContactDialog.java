@@ -51,6 +51,8 @@ public class SaveContactDialog extends DialogFragment {
     User searchedUser;
     User currentUser;
 
+    String s;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -65,6 +67,7 @@ public class SaveContactDialog extends DialogFragment {
                 if(dataSnapshot.exists()){
                     for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                         currentUser = snapshot.getValue(User.class);
+                        s = snapshot.child("contactString").getValue(String.class);
                     }
                 }
             }
@@ -78,6 +81,8 @@ public class SaveContactDialog extends DialogFragment {
 
         contactDBHelper = new ContactDBHelper(getActivity());
         myContacts = contactDBHelper.getAllContacts();
+
+        //showCurrentUser();
 
         database = FirebaseDatabase.getInstance();
         dbRef = database.getReference("users");
@@ -153,25 +158,16 @@ public class SaveContactDialog extends DialogFragment {
         String updatedContactString1 = searchedUser.getContactString()+currentUser.getUsername(); //new list of contacts to searched user
         String updatedContactString2 = currentUser.getContactString()+searchedUser.getUsername(); //new list of contacts for current user
 
-        /*
-        //dbRef.child("users").child(searchedUser.getUsername()).child("contactString").setValue(updatedContactString1);
-
-        Map<String,Object> taskMap = new HashMap<String,Object>();
-        taskMap.put("contactString", updatedContactString1);
-        dbRef.child("users").child(searchedUser.getUsername()).updateChildren(taskMap);
-
-        Map<String,Object> taskMap1 = new HashMap<String,Object>();
-        taskMap.put("contactString", updatedContactString2);
-        dbRef.child("users").child(currentUser.getUsername()).updateChildren(taskMap1);
-        //dbRef.child("users").child(currentUser.getUsername()).child("contactString").setValue(updatedContactString2);
-        */
-
 
         Map<String, Object> userUpdates = new HashMap<>();
         userUpdates.put(currentUser.getUsername()+"/contactString", updatedContactString2);
         userUpdates.put(searchedUser.getUsername()+"/contactString", updatedContactString1);
 
         dbRef.updateChildren(userUpdates);
+    }
+
+    public void showCurrentUser(){
+        String check = currentUser.getUsername();
     }
 
 }

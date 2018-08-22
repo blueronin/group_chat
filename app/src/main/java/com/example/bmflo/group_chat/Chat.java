@@ -10,10 +10,12 @@ public class Chat {
 
     private String chatName;
     private ArrayList<String> members;
+    private ArrayList<Message> messages;
 
-    public void chat(){
+    public Chat(){
         chatName = "Untitled";
         members = new ArrayList<String>();
+        messages = new ArrayList<Message>();
     }
 
     public String getChatName(){
@@ -24,12 +26,20 @@ public class Chat {
         return members;
     }
 
+    public ArrayList<Message> getMessages() {
+        return messages;
+    }
+
     public void setChatName(String name){
         chatName = name;
     }
 
     public void setMembers(ArrayList<String> arrayList){
         members = arrayList;
+    }
+
+    public void setMessages(ArrayList<Message> messages) {
+        this.messages = messages;
     }
 
     public void addMember(String user){

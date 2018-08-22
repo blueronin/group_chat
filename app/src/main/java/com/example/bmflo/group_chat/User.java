@@ -17,6 +17,8 @@ public class User {
     //contacts saved in DB
     private ArrayList<String> contacts; //usernames for duplicate prevention
     private String contactString;
+    private ArrayList<Chat> chatList;
+    private String chatListString;
 
 
     public User(String name, String username, String email){
@@ -52,6 +54,14 @@ public class User {
         return me;
     }
 
+    public ArrayList<Chat> getChatList(){
+        return chatList;
+    }
+
+    public String getChatListString() {
+        return chatListString;
+    }
+
     public void setName(String name){
         this.name = name;
     }
@@ -76,6 +86,12 @@ public class User {
         contactString = s;
     }
 
+    public void setChatList(ArrayList<Chat> chatList) {
+        this.chatList = chatList;
+    }
+
+    public void setChatListString(String s){chatListString = s;}
+
     public String contactsToString(){
         String res = "";
         for(String s: contacts){
@@ -89,5 +105,38 @@ public class User {
         contactString+=s+",";
     }
 
+    public ArrayList<String> stringToArray(String s){
+        String temp = "";
+        ArrayList<String> res = new ArrayList<String>();
+        for(int i=0; i<s.length(); i++){
+            if(s.charAt(i)==','){
+                if(temp!="initialize"){
+                    res.add(temp);
+                }
+                temp = "";
+            }
+            else{
+                temp+=s.charAt(i);
+            }
+        }
+        return res;
+    }
+
+    public String chatsToString(){
+        String res = "";
+        for(Chat s: chatList){
+            res+=s.getChatName()+",";
+        }
+        return res;
+    }
+
+    public void addChatViaString(String s){
+        chatListString+=s+",";
+    }
+
+    public void addChat(Chat c){
+        chatList.add(c);
+        chatListString=chatListString+c.getChatName()+",";
+    }
 
 }

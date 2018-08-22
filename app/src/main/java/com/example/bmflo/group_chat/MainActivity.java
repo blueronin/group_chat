@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.UserHandle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,8 +20,10 @@ import android.widget.ListView;
 import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -49,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     ChatAdapter chatAdapter;
     ContactAdapter contactAdapter;
 
+    String s;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +64,42 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        /*
+
+        //Set up chat list for view
+
+        DatabaseReference chatsRef = FirebaseDatabase.getInstance().getReference().child("chats");
+        chatsRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        //chat list done
+
+        myContacts=new ArrayList<User>();
+
         //Get Current user and convert to local user instance
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         Query query = FirebaseDatabase.getInstance().getReference("users").orderByChild("email").equalTo(email);
@@ -69,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
                 if(dataSnapshot.exists()){
                     for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                         currentUserLocal = snapshot.getValue(User.class);
+                        myContacts = extractContactsFromStringList(currentUserLocal.stringToArray(currentUserLocal.getContactString()));
+                        //s = snapshot.child("contactString").getValue(String.class);
+                        //contactAdapter.notifyDataSetChanged();
                     }
                 }
             }
@@ -79,11 +122,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //got user
-        */
+
 
         contactDBHelper = new ContactDBHelper(this);
         myContacts = contactDBHelper.getAllContacts();
+        //myContacts.add(new User(currentUser.getDisplayName(), currentUser.getDisplayName(), currentUser.getEmail()));
+
         //myContacts = extractContactsFromStringList(currentUserLocal.stringToContacts(currentUserLocal.getContactString()));
+        //showCurrentUser();
 
 
 
@@ -187,6 +233,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addChat(){
+        /*
         chatTab.setVisibility(View.GONE);
         contactTab.setVisibility(View.VISIBLE);
 
@@ -194,6 +241,14 @@ public class MainActivity extends AppCompatActivity {
             CheckBox checkBox = (CheckBox) contactList.getChildAt(i).findViewById(R.id.contact_select_box);
             checkBox.setVisibility(View.VISIBLE);
         }
+        */
+
+
+        //Test with default chat to darrian
+
+        Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+        intent.putExtra("chatName", "Tester");
+        startActivity(intent);
     }
 
     public void addContact(){
@@ -204,8 +259,8 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<User> extractContactsFromStringList(ArrayList<String> contactStringList){
         final ArrayList<User> result = new ArrayList<User>();
         for(String s: contactStringList){
-            Query query = FirebaseDatabase.getInstance().getReference("users").orderByChild("username").equalTo(s);
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
+            Query query1 = FirebaseDatabase.getInstance().getReference("users").orderByChild("username").equalTo(s);
+            query1.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if(dataSnapshot.exists()){
@@ -223,5 +278,9 @@ public class MainActivity extends AppCompatActivity {
             });
         }
         return result;
+    }
+
+    public void showCurrentUser(){
+        String check = currentUserLocal.getUsername();
     }
 }
