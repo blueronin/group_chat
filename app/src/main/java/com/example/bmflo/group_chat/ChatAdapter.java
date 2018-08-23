@@ -52,12 +52,14 @@ public class ChatAdapter extends BaseAdapter {
         TextView chatName = (TextView)chatLayout.findViewById(R.id.chat_name);
 
         Chat currentChat = chats.get(position);
+        String name = currentChat.getChatName();
 
         //String testFunc = extractChatNameFromKey(currentChat.getChatName());
         //String currentChatS = currentChat.getChatName();
         int i = 0;
 
-        chatName.setText(currentChat.getChatName());
+        //chatName.setText(currentChat.getChatName());
+        chatName.setText(extractChatNameFromKey(currentChat.getChatName()));
         //numImages.setText(currentAlbum.albumImages.size());
 
         chatLayout.setTag(position);
@@ -70,6 +72,7 @@ public class ChatAdapter extends BaseAdapter {
         String name = "";
         while(s.charAt(i)!=','){
             name+=s.charAt(i);
+            i+=1;
         }
         return name;
     }

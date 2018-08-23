@@ -71,10 +71,10 @@ public class ChatActivity extends Activity {
 
         Intent intent = getIntent();
         chatName = intent.getStringExtra("chatName");
-        chatNameView = (TextView)findViewById(R.id.chat_name);
-        //chatNameView.setText(chatName);
 
         setContentView(R.layout.activity_chat);
+        chatNameView = (TextView)findViewById(R.id.chat_header);
+        chatNameView.setText(extractChatNameFromKey(chatName));
 
 
         linearLayout = (LinearLayout) findViewById(R.id.message_holder);
@@ -182,5 +182,15 @@ public class ChatActivity extends Activity {
 
     public String extractTimeOnly(String time){
         return time.substring(12,19);
+    }
+
+    public String extractChatNameFromKey(String s){
+        int i = 0;
+        String name = "";
+        while(s.charAt(i)!=','){
+            name+=s.charAt(i);
+            i+=1;
+        }
+        return name;
     }
 }

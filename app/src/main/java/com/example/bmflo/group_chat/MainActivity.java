@@ -148,13 +148,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 User currentIterated = dataSnapshot.getValue(User.class);
-                if(currentIterated.getUsername().equals(currentUser.getDisplayName())){
-                    //This user is me, let's find the contacts
+                if(currentUser==null){
 
-                    String myContactsString = currentIterated.getContactString();
-                    myContactsStringArrayList = stringToArray(myContactsString);
-                    contactAdapter = new ContactAdapter(MainActivity.this, myContactsStringArrayList);
-                    contactList.setAdapter(contactAdapter);
+                }
+                else{
+                    if(currentIterated.getUsername().equals(currentUser.getDisplayName())){
+                        //This user is me, let's find the contacts
+
+                        String myContactsString = currentIterated.getContactString();
+                        myContactsStringArrayList = stringToArray(myContactsString);
+                        contactAdapter = new ContactAdapter(MainActivity.this, myContactsStringArrayList);
+                        contactList.setAdapter(contactAdapter);
+                    }
                 }
 
             }
