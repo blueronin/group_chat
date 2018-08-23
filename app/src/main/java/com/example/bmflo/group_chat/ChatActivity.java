@@ -51,6 +51,7 @@ public class ChatActivity extends Activity {
     private ListView messageListView;
     private LinearLayout linearLayout;
     private ScrollView scrollView;
+    private TextView chatNameView;
 
     RelativeLayout senderMessageLayout;
     RelativeLayout myMessageLayout;
@@ -70,6 +71,8 @@ public class ChatActivity extends Activity {
 
         Intent intent = getIntent();
         chatName = intent.getStringExtra("chatName");
+        chatNameView = (TextView)findViewById(R.id.chat_name);
+        //chatNameView.setText(chatName);
 
         setContentView(R.layout.activity_chat);
 
@@ -168,7 +171,7 @@ public class ChatActivity extends Activity {
 
             senderText.setText(username);
             messageText.setText(message);
-            messageTimeText.setText("12:00 pm");
+            messageTimeText.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", time));
 
             linearLayout.addView(custLayout);
             scrollView.fullScroll(View.FOCUS_DOWN);

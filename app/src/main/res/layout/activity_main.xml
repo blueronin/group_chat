@@ -33,25 +33,6 @@
 
     </LinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tab_menu"
-        android:text="Create Chat"
-        android:id="@+id/save_chat_button"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="@dimen/fab_margin"
-        android:background="@color/transparent"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tab_menu"
-        android:text="Sign Out"
-        android:id="@+id/sign_out_button"
-        android:layout_alignParentStart="true"
-        android:layout_marginRight="@dimen/fab_margin"
-        android:background="@color/transparent"/>
 
     <ListView
         android:layout_width="wrap_content"

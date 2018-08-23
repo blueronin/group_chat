@@ -11,6 +11,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -41,9 +43,6 @@ public class MainActivity extends AppCompatActivity {
     Button chatTab;
     Button contactTab;
     int mode;  //0 means we're in chat list view, 1 means we're in contact list view
-
-    Button signOut;
-    Button creatChat;
 
     ArrayList<Chat> myChats;
     ArrayList<User> myContacts;
@@ -120,29 +119,7 @@ public class MainActivity extends AppCompatActivity {
         myContacts=new ArrayList<User>();
 
         //Get Current user and convert to local user instance
-        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-
-        /*
-        Query query = FirebaseDatabase.getInstance().getReference("users").orderByChild("email").equalTo(email);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                        currentUserLocal = snapshot.getValue(User.class);
-                        myContacts = extractContactsFromStringList(currentUserLocal.stringToArray(currentUserLocal.getContactString()));
-                        //s = snapshot.child("contactString").getValue(String.class);
-                        //contactAdapter.notifyDataSetChanged();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        */
+        //String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         //got user
 
 
@@ -154,25 +131,6 @@ public class MainActivity extends AppCompatActivity {
         //showCurrentUser();
 
 
-
-        signOut = (Button) findViewById(R.id.sign_out_button);
-        signOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        creatChat = (Button) findViewById(R.id.save_chat_button);
-        creatChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CreateChatDialog dialog = new CreateChatDialog();
-                dialog.show(getFragmentManager(), "dialog");
-            }
-        });
 
         chatDBHelper = new ChatDBHelper(this);
         //contactDBHelper = new ContactDBHelper(this);
@@ -253,6 +211,27 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_signout: {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                break;
+            }
+        }
+        return true;
     }
 
     public void checkSignedIn(){
@@ -265,22 +244,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addChat(){
-        /*
-        chatTab.setVisibility(View.GONE);
-        contactTab.setVisibility(View.VISIBLE);
-
-        for (int i = 0; i < contactList.getCount(); i++) {
-            CheckBox checkBox = (CheckBox) contactList.getChildAt(i).findViewById(R.id.contact_select_box);
-            checkBox.setVisibility(View.VISIBLE);
-        }
-        */
-
-
         //Test with default chat to darrian
 
-        Intent intent = new Intent(MainActivity.this, ChatActivity.class);
-        intent.putExtra("chatName", "Tester");
-        startActivity(intent);
+        CreateChatDialog dialog = new CreateChatDialog();
+        dialog.show(getFragmentManager(), "dialog");
     }
 
     public void addContact(){
