@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -106,7 +107,6 @@ public class SaveContactDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 saveToContacts();
-                addButton.setVisibility(View.GONE);
                 String message = "Added "+searchedUser.getUsername()+"!";
                 result.setText(message);
             }
@@ -115,7 +115,8 @@ public class SaveContactDialog extends DialogFragment {
         builder.setTitle("Add Contact").setView(view).setNegativeButton("Close", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -124,6 +125,7 @@ public class SaveContactDialog extends DialogFragment {
 
     public void searchUser(){
         String username = search.getText().toString();
+        search.setText("");
 
         Query query = FirebaseDatabase.getInstance().getReference("users").orderByChild("username").equalTo(username);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -155,8 +157,8 @@ public class SaveContactDialog extends DialogFragment {
 
 
         contactDBHelper.addData(searchedUser);
-        String updatedContactString1 = searchedUser.getContactString()+currentUser.getUsername(); //new list of contacts to searched user
-        String updatedContactString2 = currentUser.getContactString()+searchedUser.getUsername(); //new list of contacts for current user
+        String updatedContactString1 = searchedUser.getContactString()+currentUser.getUsername()+","; //new list of contacts to searched user
+        String updatedContactString2 = currentUser.getContactString()+searchedUser.getUsername()+","; //new list of contacts for current user
 
 
         Map<String, Object> userUpdates = new HashMap<>();

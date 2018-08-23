@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<Chat> myChats;
     ArrayList<User> myContacts;
+    ArrayList<String> myContactsStringArrayList;
     ChatDBHelper chatDBHelper;
     ContactDBHelper contactDBHelper;
     ListView chatList;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     ContactAdapter contactAdapter;
 
     DatabaseReference chatsRef;
+    DatabaseReference usersRef;
 
     //String s;
 
@@ -65,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         //Check if user is signed in
         mAuth = FirebaseAuth.getInstance();
         checkSignedIn();
+        currentUser = mAuth.getCurrentUser();
+
 
         setContentView(R.layout.activity_main);
 
@@ -83,8 +87,16 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Chat currentChat = dataSnapshot.getValue(Chat.class);
 
-                //check if current user is a member
-                boolean isAMember = isMember(currentUser.getDisplayName(), dataSnapshot.getKey());
+                //check if current user is a member)
+
+                boolean isAMember;
+
+                if(currentUser == null){
+                    isAMember=false;
+                }
+                else{
+                    isAMember = isMember(currentUser.getDisplayName(), dataSnapshot.getKey());
+                }
 
                 if(isAMember){
                     currentChat.setChatName(dataSnapshot.getKey());
@@ -130,6 +142,44 @@ public class MainActivity extends AppCompatActivity {
 
         myContacts=new ArrayList<User>();
 
+
+        usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+        usersRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                User currentIterated = dataSnapshot.getValue(User.class);
+                if(currentIterated.getUsername().equals(currentUser.getDisplayName())){
+                    //This user is me, let's find the contacts
+
+                    String myContactsString = currentIterated.getContactString();
+                    myContactsStringArrayList = stringToArray(myContactsString);
+                    contactAdapter = new ContactAdapter(MainActivity.this, myContactsStringArrayList);
+                    contactList.setAdapter(contactAdapter);
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         //Get Current user and convert to local user instance
         //String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         //got user
@@ -137,10 +187,7 @@ public class MainActivity extends AppCompatActivity {
 
         contactDBHelper = new ContactDBHelper(this);
         myContacts = contactDBHelper.getAllContacts();
-        //myContacts.add(new User(currentUser.getDisplayName(), currentUser.getDisplayName(), currentUser.getEmail()));
 
-        //myContacts = extractContactsFromStringList(currentUserLocal.stringToContacts(currentUserLocal.getContactString()));
-        //showCurrentUser();
 
 
 
@@ -161,8 +208,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        contactAdapter = new ContactAdapter(this, myContacts);
-        contactList.setAdapter(contactAdapter);
+        //contactAdapter = new ContactAdapter(this, myContacts);
+        //contactList.setAdapter(contactAdapter);
         contactList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -296,6 +343,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean isMember(String user, String chatKey) {
+        String test = user;
         ArrayList<String> allMembers = stringToArray(chatKey);
         for(String s:allMembers){
             if(user.equals(s)){
@@ -310,8 +358,10 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> arrayList = new ArrayList<String>();
         for(int i=0; i<s.length(); i++){
             if(s.charAt(i)==','){
-                arrayList.add(currentMember);
-                currentMember="";
+                if(currentMember != null && !currentMember.isEmpty()){
+                    arrayList.add(currentMember);
+                    currentMember = "";
+                }
             }
             else{
                 currentMember+=s.charAt(i);

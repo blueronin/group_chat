@@ -17,12 +17,12 @@ import java.util.ArrayList;
  */
 
 public class ContactAdapter extends BaseAdapter {
-    private ArrayList<User> contacts;
+    private ArrayList<String> contacts;
     private LayoutInflater contactInfo;
     private Context context;
     private RecyclerView.ViewHolder holder;
 
-    public ContactAdapter(Context c, ArrayList<User> myContacts){
+    public ContactAdapter(Context c, ArrayList<String> myContacts){
         contacts = myContacts;
         contactInfo = LayoutInflater.from(c);
         context=c;
@@ -48,9 +48,10 @@ public class ContactAdapter extends BaseAdapter {
         ImageView contactIcon = (ImageView)chatLayout.findViewById(R.id.contact_icon);
         TextView contactName = (TextView)chatLayout.findViewById(R.id.contact_name);
 
-        User currentCContact = contacts.get(position);
-
-        contactName.setText(currentCContact.getName());
+        //User currentCContact = contacts.get(position);
+        String currentCContact = contacts.get(position);
+        //contactName.setText(currentCContact.getName());
+        contactName.setText(currentCContact);
 
         chatLayout.setTag(position);
 

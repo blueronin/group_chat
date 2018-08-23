@@ -55,7 +55,7 @@ public class ChatAdapter extends BaseAdapter {
 
         //String testFunc = extractChatNameFromKey(currentChat.getChatName());
         //String currentChatS = currentChat.getChatName();
-        //int i = 0;
+        int i = 0;
 
         chatName.setText(currentChat.getChatName());
         //numImages.setText(currentAlbum.albumImages.size());

@@ -27,7 +27,7 @@ public class User {
         this.email = email;
         this.contacts = new ArrayList<String>();
         //contactString = contactsToString();
-        this.contactString="oscar1";
+        this.contactString=",";
     }
 
     public User()
