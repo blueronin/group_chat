@@ -92,8 +92,10 @@ public class ChatActivity extends Activity {
                 String text=messageEditor.getText().toString();
                 User sender = new User(currentUsername, currentUsername, currentUserEmail);
                 Message message = new Message(text, sender, currentUsername);
+                String time = DateFormat.format("dd-MM-yyyy (HH:mm:ss)", message.getTimeSent()).toString();
+                String messageKey = currentUsername+","+time;
                 messageEditor.setText("");
-                dbRef.child(message.getText()).setValue(message);
+                dbRef.child(messageKey).setValue(message);
             }
         });
 
@@ -154,7 +156,7 @@ public class ChatActivity extends Activity {
             TextView messageTimeText = (TextView) custLayout.findViewById(R.id.my_message_time);
 
             messageText.setText(message);
-            messageTimeText.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", time));
+            messageTimeText.setText(extractTimeOnly(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", time).toString()));
 
             linearLayout.addView(custLayout);
             scrollView.fullScroll(View.FOCUS_DOWN);
@@ -171,10 +173,14 @@ public class ChatActivity extends Activity {
 
             senderText.setText(username);
             messageText.setText(message);
-            messageTimeText.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", time));
+            messageTimeText.setText(extractTimeOnly(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", time).toString()));
 
             linearLayout.addView(custLayout);
             scrollView.fullScroll(View.FOCUS_DOWN);
         }
+    }
+
+    public String extractTimeOnly(String time){
+        return time.substring(12,19);
     }
 }
