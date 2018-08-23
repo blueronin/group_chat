@@ -93,7 +93,8 @@ public class ChatActivity extends Activity {
                 User sender = new User(currentUsername, currentUsername, currentUserEmail);
                 Message message = new Message(text, sender, currentUsername);
                 String time = DateFormat.format("dd-MM-yyyy (HH:mm:ss)", message.getTimeSent()).toString();
-                String messageKey = currentUsername+","+time;
+                //String messageKey = currentUsername+","+time;
+                String messageKey = time+","+currentUsername;
                 messageEditor.setText("");
                 dbRef.child(messageKey).setValue(message);
             }
@@ -193,4 +194,5 @@ public class ChatActivity extends Activity {
         }
         return name;
     }
+
 }
