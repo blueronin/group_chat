@@ -39,7 +39,6 @@ public class CreateChatDialog extends DialogFragment {
     private EditText searchEdit;
     private ImageButton searchButton;
     private ImageButton addButton;
-    private ArrayList<String> members;
     private ArrayList<User> membersInfo;
     private User currentUser;
     private TextView result;
@@ -47,9 +46,13 @@ public class CreateChatDialog extends DialogFragment {
 
     String chatName;
 
+    String currentUserName;
+    String members;
+    String searchedUser;
+    String email;
+
     DatabaseReference usersRef;
     DatabaseReference chatsRef;
-    FirebaseAuth auth;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -57,7 +60,7 @@ public class CreateChatDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_save_chat, null);
 
-        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        currentUserName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
 
         Query query = FirebaseDatabase.getInstance().getReference("users").orderByChild("email").equalTo(email);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -79,11 +82,11 @@ public class CreateChatDialog extends DialogFragment {
         chatNameEdit = (EditText) view.findViewById(R.id.name_edit_view);
         searchEdit = (EditText) view.findViewById(R.id.search_view);
         searchButton = (ImageButton) view.findViewById(R.id.search_button);
-        //addButton = (ImageButton) view.findViewById(R.id.addMemberButton);
+        addButton = (ImageButton) view.findViewById(R.id.addMemberButton);
         result = (TextView) view.findViewById(R.id.result);
         resultLayout = (RelativeLayout) view.findViewById(R.id.resultEntry);
-        members = new ArrayList<String>();
         membersInfo = new ArrayList<User>();
+        members = "";
 
         usersRef = FirebaseDatabase.getInstance().getReference().child("users");
         chatsRef = FirebaseDatabase.getInstance().getReference().child("chats");
@@ -115,26 +118,30 @@ public class CreateChatDialog extends DialogFragment {
             }
         });
 
-        /*
+
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addMemberToChat();
+                resultLayout.setVisibility(View.VISIBLE);
+                result.setText(searchEdit.getText().toString());
+                searchedUser = searchEdit.getText().toString();
+                searchEdit.setText("");
+                //addMemberToChat();
             }
         });
-        */
-        /*
+
+
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Just for view purposes
-                String message = "Added user!";
+                members=members+searchedUser+",";
+                String message = "Added "+searchedUser+"!!";
                 result.setText(message);
             }
         });
 
-        */
+
 
         builder.setTitle("Create Chat").setView(view).setNegativeButton("Close", new DialogInterface.OnClickListener() {
             @Override
@@ -144,30 +151,19 @@ public class CreateChatDialog extends DialogFragment {
         }).setPositiveButton("Create", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                members.add(currentUser.getUsername());
-                membersInfo.add(currentUser);
+                //members.add(currentUser.getUsername());
+                //membersInfo.add(currentUser);
                 Chat chat = new Chat();
+                members = members + currentUserName + ",";
                 chatName = chatNameEdit.getText().toString();
+                chatName=chatName+","+members;
+
+                //chat name is set chat name plus the usernames for all members
                 chat.setChatName(chatName);
-                chat.setMembers(members);
-
-                //chatsRef.child(chatName).setValue(chat);
-
-                /*
-                for(User u:membersInfo){
-                    u.addChatViaString(chatName);
-                    String newChatString = u.getChatListString();
-
-                    Map<String, Object> userUpdates = new HashMap<>();
-                    userUpdates.put(u.getUsername()+"/chatListString", newChatString);
-
-                    usersRef.updateChildren(userUpdates);
-                }
-                */
+                //chat.setMembers(members);
 
                 Intent intent = new Intent(getContext(), ChatActivity.class);
                 intent.putExtra("chatName", chatName);
-                //intent.putExtra("members",members);
                 startActivity(intent);
             }
         });
@@ -180,39 +176,7 @@ public class CreateChatDialog extends DialogFragment {
     public void addMemberToChat(){
         String username = searchEdit.getText().toString();
         searchEdit.setText("");
-        Query query = usersRef.orderByChild("username").equalTo(username);
+        searchedUser = username;
 
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                        User user = snapshot.getValue(User.class);
-
-                        resultLayout.setVisibility(View.VISIBLE);
-                        String userInfo = (user.getUsername()+"\n"+user.getName()+"\n"+user.getEmail());
-                        result.setText(userInfo);
-
-                        user.addChatViaString(chatName);
-                        String newChatString = user.getChatListString();
-
-                        Map<String, Object> userUpdates = new HashMap<>();
-                        userUpdates.put(user.getUsername()+"/chatListString", newChatString);
-
-                        usersRef.updateChildren(userUpdates);
-
-
-                        //Makes add Button irrelevant, just for view purposes
-                        //members.add(user.getUsername());
-                        //membersInfo.add(user);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 }

@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
     DatabaseReference chatsRef;
 
-    String s;
+    //String s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +82,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Chat currentChat = dataSnapshot.getValue(Chat.class);
-                currentChat.setChatName(dataSnapshot.getKey());
-                myChats.add(currentChat);
+
+                //check if current user is a member
+                boolean isAMember = isMember(currentUser.getDisplayName(), dataSnapshot.getKey());
+
+                if(isAMember){
+                    currentChat.setChatName(dataSnapshot.getKey());
+                    myChats.add(currentChat);
+
+                    chatAdapter = new ChatAdapter(MainActivity.this, myChats);
+                    chatList.setAdapter(chatAdapter);
+                }
+
+                //currentChat.setChatName(dataSnapshot.getKey());
+                //myChats.add(currentChat);
 
                 chatAdapter = new ChatAdapter(MainActivity.this, myChats);
                 chatList.setAdapter(chatAdapter);
@@ -281,5 +293,30 @@ public class MainActivity extends AppCompatActivity {
 
     public void showCurrentUser(){
         String check = currentUserLocal.getUsername();
+    }
+
+    public boolean isMember(String user, String chatKey) {
+        ArrayList<String> allMembers = stringToArray(chatKey);
+        for(String s:allMembers){
+            if(user.equals(s)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<String> stringToArray(String s){
+        String currentMember = "";
+        ArrayList<String> arrayList = new ArrayList<String>();
+        for(int i=0; i<s.length(); i++){
+            if(s.charAt(i)==','){
+                arrayList.add(currentMember);
+                currentMember="";
+            }
+            else{
+                currentMember+=s.charAt(i);
+            }
+        }
+        return arrayList;
     }
 }

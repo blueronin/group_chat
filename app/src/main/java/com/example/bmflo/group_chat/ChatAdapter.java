@@ -53,11 +53,24 @@ public class ChatAdapter extends BaseAdapter {
 
         Chat currentChat = chats.get(position);
 
+        //String testFunc = extractChatNameFromKey(currentChat.getChatName());
+        //String currentChatS = currentChat.getChatName();
+        //int i = 0;
+
         chatName.setText(currentChat.getChatName());
         //numImages.setText(currentAlbum.albumImages.size());
 
         chatLayout.setTag(position);
 
         return chatLayout;
+    }
+
+    public String extractChatNameFromKey(String s){
+        int i = 0;
+        String name = "";
+        while(s.charAt(i)!=','){
+            name+=s.charAt(i);
+        }
+        return name;
     }
 }
