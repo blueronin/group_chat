@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/name_prompt"
+        android:text="Chat Name"/>
+    <EditText
+        android:id="@+id/name_edit_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/login_border"
+        android:layout_below="@id/name_prompt"
+        android:hint="Ex: Roommates"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        />
+
+    <!--
+
+    <TextView
+        android:layout_below="@+id/name_edit_view"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/search_prompt"
+        android:text="@string/prompt"/>
+    <EditText
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/login_border"
+        android:layout_below="@id/search_prompt"
+        android:hint="jane@example.com"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        />
+
+    <ImageButton
+        android:id="@+id/search_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/search_view"
+        android:layout_alignRight="@id/search_view"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="4dp"
+        android:background="@android:drawable/ic_menu_search"
+        android:onClick="searchUser"/>
+
+    <RelativeLayout
+        android:id="@+id/resultEntry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        android:layout_below="@id/search_view"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/result"
+            android:layout_centerVertical="true" />
+
+        <ImageButton
+            android:id="@+id/addMemberButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_add"
+            android:background="@drawable/chat_thumb_sample"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            />
+
+    </RelativeLayout>
+
+    -->
+
+</RelativeLayout>

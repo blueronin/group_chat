@@ -38,7 +38,8 @@
         android:layout_height="match_parent"
         android:id="@+id/message_scroll_view"
         android:layout_below="@+id/chat_heading"
-        android:layout_weight="3">
+        android:layout_weight="3"
+        android:isScrollContainer="false">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -52,7 +53,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/message_editor"
-        android:layout_alignParentBottom="true"
         android:layout_weight="8"
         android:background="@color/colorPrimary"
         >

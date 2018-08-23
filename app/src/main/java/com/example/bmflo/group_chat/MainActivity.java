@@ -10,12 +10,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     int mode;  //0 means we're in chat list view, 1 means we're in contact list view
 
     Button signOut;
+    Button creatChat;
 
     ArrayList<Chat> myChats;
     ArrayList<User> myContacts;
@@ -51,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
     ChatAdapter chatAdapter;
     ContactAdapter contactAdapter;
+
+    DatabaseReference chatsRef;
 
     String s;
 
@@ -67,11 +72,22 @@ public class MainActivity extends AppCompatActivity {
 
         //Set up chat list for view
 
-        DatabaseReference chatsRef = FirebaseDatabase.getInstance().getReference().child("chats");
+        chatList = (ListView) findViewById(R.id.chat_list_view);
+        contactList = (ListView) findViewById(R.id.contacts_list_view);
+        contactList.setVisibility(View.GONE);
+
+        myChats = new ArrayList<Chat>();
+
+        chatsRef = FirebaseDatabase.getInstance().getReference().child("chats");
         chatsRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Chat currentChat = dataSnapshot.getValue(Chat.class);
+                currentChat.setChatName(dataSnapshot.getKey());
+                myChats.add(currentChat);
 
+                chatAdapter = new ChatAdapter(MainActivity.this, myChats);
+                chatList.setAdapter(chatAdapter);
             }
 
             @Override
@@ -96,12 +112,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
         //chat list done
+
+
 
         myContacts=new ArrayList<User>();
 
         //Get Current user and convert to local user instance
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+        /*
         Query query = FirebaseDatabase.getInstance().getReference("users").orderByChild("email").equalTo(email);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -121,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        */
         //got user
 
 
@@ -143,19 +165,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        creatChat = (Button) findViewById(R.id.save_chat_button);
+        creatChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateChatDialog dialog = new CreateChatDialog();
+                dialog.show(getFragmentManager(), "dialog");
+            }
+        });
+
         chatDBHelper = new ChatDBHelper(this);
         //contactDBHelper = new ContactDBHelper(this);
-        myChats = chatDBHelper.getAllChats();
+        //myChats = chatDBHelper.getAllChats();
         //myContacts = contactDBHelper.getAllContacts();
-        chatList = (ListView) findViewById(R.id.chat_list_view);
-        contactList = (ListView) findViewById(R.id.contacts_list_view);
+        //chatList = (ListView) findViewById(R.id.chat_list_view);
+        //contactList = (ListView) findViewById(R.id.contacts_list_view);
 
-        chatAdapter = new ChatAdapter(this, myChats);
-        chatList.setAdapter(chatAdapter);
         chatList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                String name = myChats.get(position).getChatName();
+                Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+                intent.putExtra("chatName", name);
+                startActivity(intent);
             }
         });
 

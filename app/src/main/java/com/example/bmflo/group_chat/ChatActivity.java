@@ -1,11 +1,13 @@
 package com.example.bmflo.group_chat;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,11 +19,13 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -30,11 +34,13 @@ import java.util.ArrayList;
  * Created by bmflo on 8/22/2018.
  */
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends Activity {
 
 
     private Chat currentChat;
     private User currentUser;
+    private String currentUsername;
+    private String currentUserEmail;
 
     private ArrayList<Message> allMessages;
     private ArrayList<User> members;
@@ -57,23 +63,15 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
+        //Get Current user and convert to local user instance
+        currentUsername = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        currentUserEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+
         Intent intent = getIntent();
         chatName = intent.getStringExtra("chatName");
 
         setContentView(R.layout.activity_chat);
-
-        //Tester chat object
-        Chat chat = new Chat();
-        chat.setChatName(chatName);
-        User user = new User("Darrian", "darrian1", "starr316@gmail.com");
-        User user1 = new User("Bob", "bob1", "bob@gmail.com");
-
-        chat.addMember("darrian1");
-        chat.addMember("bob1");
-
-        currentChat = chat;
-
-        currentUser = user1;
 
 
         linearLayout = (LinearLayout) findViewById(R.id.message_holder);
@@ -89,9 +87,9 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String text=messageEditor.getText().toString();
-                User sender = currentUser;
-                String senderUsername = currentUser.getUsername();
-                Message message = new Message(text, sender, senderUsername);
+                User sender = new User(currentUsername, currentUsername, currentUserEmail);
+                Message message = new Message(text, sender, currentUsername);
+                messageEditor.setText("");
                 dbRef.child(message.getText()).setValue(message);
             }
         });
@@ -102,7 +100,6 @@ public class ChatActivity extends AppCompatActivity {
                 Message currentMessage = dataSnapshot.getValue(Message.class);
                 User sender = currentMessage.getSender();
                 String senderUsername = currentMessage.getSenderUsename();
-                String currentUsername = currentUser.getUsername();
                 String messageText = currentMessage.getText();
                 long time = currentMessage.getTimeSent();
                 if(senderUsername.equals(currentUsername)){
@@ -154,7 +151,7 @@ public class ChatActivity extends AppCompatActivity {
             TextView messageTimeText = (TextView) custLayout.findViewById(R.id.my_message_time);
 
             messageText.setText(message);
-            messageTimeText.setText("12:00 pm");
+            messageTimeText.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", time));
 
             linearLayout.addView(custLayout);
             scrollView.fullScroll(View.FOCUS_DOWN);
