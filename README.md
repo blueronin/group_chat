@@ -34,7 +34,7 @@ Platform:
 
 
 
-~~~SUBMISSION NOTES~~~
+SUBMISSION NOTES
 
 Here is my group chat application!
 
