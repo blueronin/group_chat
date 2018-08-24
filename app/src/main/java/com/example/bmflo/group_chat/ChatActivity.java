@@ -19,18 +19,18 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpRequestInitializer;
-import com.google.api.client.http.LowLevelHttpRequest;
-import com.google.api.client.json.JsonGenerator;
-import com.google.api.client.json.JsonParser;
-import com.google.api.services.youtube.YouTube;
-import com.google.api.services.youtube.model.ResourceId;
-import com.google.api.services.youtube.model.SearchListResponse;
-import com.google.api.services.youtube.model.SearchResult;
-import com.google.api.services.youtube.model.Thumbnail;
+//import com.google.android.gms.auth.api.Auth;
+//import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+//import com.google.api.client.http.HttpRequest;
+//import com.google.api.client.http.HttpRequestInitializer;
+//import com.google.api.client.http.LowLevelHttpRequest;
+//import com.google.api.client.json.JsonGenerator;
+//import com.google.api.client.json.JsonParser;
+//import com.google.api.services.youtube.YouTube;
+//import com.google.api.services.youtube.model.ResourceId;
+//import com.google.api.services.youtube.model.SearchListResponse;
+//import com.google.api.services.youtube.model.SearchResult;
+//mport com.google.api.services.youtube.model.Thumbnail;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -41,10 +41,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
+//import com.google.api.client.http.HttpTransport;
+//import com.google.api.client.http.javanet.NetHttpTransport;
+//import com.google.api.client.json.JsonFactory;
+//import com.google.api.client.json.jackson2.JacksonFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -91,7 +91,7 @@ public class ChatActivity extends Activity {
 
     //Youtube
     private static final String PROPS = "youtube.properties";
-    private static YouTube youtube;
+    //private static YouTube youtube;
     private static final long NUM_RESULTS = 1;
 
     @Override
@@ -186,7 +186,7 @@ public class ChatActivity extends Activity {
             System.exit(1);
         }
         */
-
+        /*
         try {
             //Maybe problem here because it is used for api request
             youtube = new YouTube.Builder(new HttpTransport() {
@@ -234,6 +234,7 @@ public class ChatActivity extends Activity {
         }catch (Throwable t) {
             t.printStackTrace();
         }
+        */
 
     }
 
@@ -333,6 +334,7 @@ public class ChatActivity extends Activity {
         }
     }
 
+    /*
     public void getResult(Iterator<SearchResult> iterator, String query){
         if (!iterator.hasNext()) {
             messageEditor.setText("No results :(");
@@ -351,5 +353,6 @@ public class ChatActivity extends Activity {
             }
         }
     }
+    */
 
 }
