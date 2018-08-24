@@ -31,3 +31,23 @@ Platform:
 
 * Fork this repository
 * Create a Github pull request with the implementation and URL to checkit
+
+
+
+SUBMISSION NOTES
+
+Here is my group chat application
+
+Users can create an account with their email and set a username
+Users can create chats and specify members to add via their username
+  Only members of a chat can access chat and send messages in it
+  User can add any member in the database to the chat (not just their contacts)
+  Chats can have 1 or more members (single or group chat supported)
+Users can add contacts via their username
+Chat message activity includes space for user to input message and a send button
+The star button is for youtube search, unfortunately this feature was not completed, so if you input a query and press the star button you will get a message saying the feature is unavailable
+Users can access their profile from the main activity via the hamburger menu
+
+!!BUG!!
+There is a major bug in this app that causes it to crash upon REGISTERING a new user. The new user IS created and registered successfully. If you open the app again you will be logged in as that new user and the app will work fine. I located the line and error description but have not been able to fix it, in Android Studio's debug mode there is no error which made it difficult to find the true cause. (The error happens while loading the user's existing chats)
+If you log out and log in as that new user it will also work fine.
