@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -122,6 +123,7 @@ public class CreateChatDialog extends DialogFragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 resultLayout.setVisibility(View.VISIBLE);
                 result.setText(searchEdit.getText().toString());
                 searchedUser = searchEdit.getText().toString();
@@ -167,6 +169,8 @@ public class CreateChatDialog extends DialogFragment {
                 startActivity(intent);
             }
         });
+
+
 
         return builder.create();
     }

@@ -157,6 +157,9 @@ public class MainActivity extends AppCompatActivity {
 
                         String myContactsString = currentIterated.getContactString();
                         myContactsStringArrayList = stringToArray(myContactsString);
+                        //if(myContactsStringArrayList.size()!=0) {
+                        //    myContactsStringArrayList.remove(0);
+                        //}
                         contactAdapter = new ContactAdapter(MainActivity.this, myContactsStringArrayList);
                         contactList.setAdapter(contactAdapter);
                     }
@@ -236,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     mode = 0;
                     chatTab.setBackground(getDrawable(R.drawable.tab_border));
-                    chatTab.setTextColor(R.color.colorPrimary);
+                    //chatTab.setTextColor(R.color.colorPrimary);
                     contactTab.setBackground(getDrawable(R.drawable.tab_border_unselected));
                     contactTab.setTextColor(Color.BLACK);
                     chatList.setVisibility(View.VISIBLE);
@@ -252,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
                     chatTab.setBackground(getDrawable(R.drawable.tab_border_unselected));
                     chatTab.setTextColor(Color.BLACK);
                     contactTab.setBackground(getDrawable(R.drawable.tab_border));
-                    contactTab.setTextColor(R.color.colorPrimary);
+                    //contactTab.setTextColor(R.color.colorPrimary);
                     chatList.setVisibility(View.GONE);
                     contactList.setVisibility(View.VISIBLE);
                 }
@@ -293,6 +296,16 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 break;
+            }
+            case R.id.action_profile: {
+                String s = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+                String s1 = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                intent.putExtra("username", s);
+                intent.putExtra("email",s1);
+
+                startActivity(intent);
             }
         }
         return true;
