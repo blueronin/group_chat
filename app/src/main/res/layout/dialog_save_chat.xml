@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/login_border"
         android:layout_below="@id/search_prompt"
-        android:hint="jane@example.com"
+        android:hint="Ex: jane123"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="7dp"
