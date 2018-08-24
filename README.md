@@ -34,9 +34,9 @@ Platform:
 
 
 
-SUBMISSION NOTES
+~~~SUBMISSION NOTES~~~
 
-Here is my group chat application
+Here is my group chat application!
 
 Users can create an account with their email and set a username
 Users can create chats and specify members to add via their username
@@ -45,9 +45,10 @@ Users can create chats and specify members to add via their username
   Chats can have 1 or more members (single or group chat supported)
 Users can add contacts via their username
 Chat message activity includes space for user to input message and a send button
-The star button is for youtube search, unfortunately this feature was not completed, so if you input a query and press the star button you will get a message saying the feature is unavailable
+The star button is for youtube search, unfortunately this feature has not been completed, so if you input a query and press the star button you will get a message saying the feature is unavailable
 Users can access their profile from the main activity via the hamburger menu
+Users can sign out view the hamburger menu
 
 !!BUG!!
-There is a major bug in this app that causes it to crash upon REGISTERING a new user. The new user IS created and registered successfully. If you open the app again you will be logged in as that new user and the app will work fine. I located the line and error description but have not been able to fix it, in Android Studio's debug mode there is no error which made it difficult to find the true cause. (The error happens while loading the user's existing chats)
+There is a major bug in this app that causes it to crash upon REGISTERING a new user. The new user IS created and registered successfully. If you open the app again you will be logged in as that new user and the app will work fine. I located the line and error description but have not been able to fix it, in Android Studio's debug mode there is no error which made it difficult to find the true cause. (The error happens while checking to see if the new user is a member of any of the existing chats in the database, which is how a user's chat list is populated)
 If you log out and log in as that new user it will also work fine.
